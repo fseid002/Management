@@ -4,9 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sol Foreign Employment Agency - Candidate Tracking & Management System</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
@@ -57,9 +61,11 @@
 </head>
 <body class="h-full flex flex-col font-sans text-slate-800 antialiased bg-slate-50">
 
+    <!-- Top Navigation Bar -->
     <header class="bg-sol-900 text-white shadow-md sticky top-0 z-30">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
+                <!-- Logo & Title -->
                 <div class="flex items-center space-x-3">
                     <div class="bg-amber-500 text-sol-900 p-2 rounded-lg font-bold flex items-center justify-center">
                         <i data-lucide="plane-takeoff" class="w-6 h-6"></i>
@@ -70,6 +76,7 @@
                     </div>
                 </div>
 
+                <!-- Navigation Tabs -->
                 <nav class="hidden md:flex space-x-1">
                     <button id="nav-dashboard" onclick="switchTab('dashboard')" class="nav-btn px-4 py-2 rounded-md text-sm font-medium transition flex items-center gap-2 bg-sol-800 text-white shadow-inner">
                         <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard
@@ -85,11 +92,13 @@
                     </button>
                 </nav>
 
+                <!-- Action Button -->
                 <div class="flex items-center gap-3">
                     <button onclick="openAddModal()" class="bg-amber-500 hover:bg-amber-600 text-sol-900 font-semibold text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-lg shadow-sm transition flex items-center gap-1.5">
                         <i data-lucide="user-plus" class="w-4 h-4"></i>
                         <span>New Applicant</span>
                     </button>
+                    <!-- Mobile Menu Button -->
                     <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-md text-slate-300 hover:text-white hover:bg-sol-800 focus:outline-none">
                         <i data-lucide="menu" class="w-6 h-6"></i>
                     </button>
@@ -97,6 +106,7 @@
             </div>
         </div>
 
+        <!-- Mobile Nav Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-sol-800 px-4 pt-2 pb-3 space-y-1">
             <button onclick="switchTab('dashboard'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-white hover:bg-sol-700">Dashboard</button>
             <button onclick="switchTab('candidates'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:bg-sol-700">Candidates Manager</button>
@@ -105,9 +115,12 @@
         </div>
     </header>
 
+    <!-- Main Content Container -->
     <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
 
+        <!-- TAB 1: DASHBOARD -->
         <section id="tab-dashboard" class="space-y-6">
+            <!-- Summary Stats Grid -->
             <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
                 <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
                     <div class="flex justify-between items-center text-slate-500">
@@ -165,7 +178,9 @@
                 </div>
             </div>
 
+            <!-- Charts Section -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Bar Chart: Candidates per Stage -->
                 <div class="lg:col-span-2 bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
@@ -178,6 +193,7 @@
                     </div>
                 </div>
 
+                <!-- Doughnut Chart: Overall Status breakdown -->
                 <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
                     <h3 class="font-bold text-slate-800 text-base mb-4 flex items-center gap-2">
                         <i data-lucide="pie-chart" class="w-5 h-5 text-amber-500"></i>
@@ -189,6 +205,7 @@
                 </div>
             </div>
 
+            <!-- Quick Recent Activity & Fast Actions -->
             <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
@@ -211,19 +228,25 @@
                                 <th class="p-3 rounded-r-md text-right">Action</th>
                             </tr>
                         </thead>
-                        <tbody id="recent-candidates-table" class="divide-y divide-slate-100"></tbody>
+                        <tbody id="recent-candidates-table" class="divide-y divide-slate-100">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
                     </table>
                 </div>
             </div>
         </section>
 
+        <!-- TAB 2: CANDIDATES MANAGEMENT (TABLE VIEW) -->
         <section id="tab-candidates" class="space-y-4 hidden">
+            <!-- Filter Bar -->
             <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-3 justify-between items-center">
+                <!-- Search -->
                 <div class="relative w-full md:w-80">
                     <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
                     <input type="text" id="search-input" onkeyup="renderCandidatesTable()" placeholder="Search name, passport, or ID..." class="w-full pl-9 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sol-600 focus:outline-none">
                 </div>
 
+                <!-- Filters -->
                 <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
                     <select id="stage-filter" onchange="renderCandidatesTable()" class="px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:ring-2 focus:ring-sol-600 focus:outline-none flex-1 md:flex-none">
                         <option value="ALL">All 10 Stages</option>
@@ -254,6 +277,7 @@
                 </div>
             </div>
 
+            <!-- Main Table -->
             <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm text-slate-600">
@@ -268,9 +292,12 @@
                                 <th class="p-3.5 text-center">Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="candidates-table-body" class="divide-y divide-slate-100"></tbody>
+                        <tbody id="candidates-table-body" class="divide-y divide-slate-100">
+                            <!-- Populated via JS -->
+                        </tbody>
                     </table>
                 </div>
+                <!-- Pagination Footer -->
                 <div class="p-3.5 bg-slate-50 border-t border-slate-200 text-xs text-slate-500 flex justify-between items-center">
                     <span id="candidates-count-text">Showing 0 candidates</span>
                     <span>Sol Employment Management Portal v2.0</span>
@@ -278,13 +305,18 @@
             </div>
         </section>
 
+        <!-- TAB 3: KANBAN STAGE BOARD -->
         <section id="tab-kanban" class="space-y-4 hidden">
             <div class="flex justify-between items-center">
                 <p class="text-xs text-slate-500">Horizontal scrollable view across all 10 stages. Click on candidate cards for quick detail view.</p>
             </div>
-            <div class="flex gap-4 overflow-x-auto custom-scrollbar pb-6 pt-1" id="kanban-container" style="min-height: 520px;"></div>
+            
+            <div class="flex gap-4 overflow-x-auto custom-scrollbar pb-6 pt-1" id="kanban-container" style="min-height: 520px;">
+                <!-- 10 Columns generated via JavaScript -->
+            </div>
         </section>
 
+        <!-- TAB 4: PUBLIC CANDIDATE TRACKER PORTAL -->
         <section id="tab-tracker" class="space-y-6 hidden">
             <div class="max-w-2xl mx-auto bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-md">
                 <div class="text-center space-y-2 mb-6">
@@ -311,11 +343,15 @@
                 </div>
             </div>
 
-            <div id="public-search-result" class="hidden max-w-4xl mx-auto bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-md space-y-6"></div>
+            <!-- Search Result Timeline Display -->
+            <div id="public-search-result" class="hidden max-w-4xl mx-auto bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-md space-y-6">
+                <!-- Dynamically filled with applicant timeline -->
+            </div>
         </section>
 
     </main>
 
+    <!-- MODAL: ADD NEW CANDIDATE -->
     <div id="add-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-2xl w-full shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
             <div class="bg-sol-900 px-6 py-4 text-white flex justify-between items-center">
@@ -388,16 +424,22 @@
         </div>
     </div>
 
+    <!-- MODAL: CANDIDATE DETAILS & STAGE MANAGEMENT -->
     <div id="detail-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-3xl w-full shadow-2xl overflow-hidden flex flex-col max-h-[90vh]" id="detail-modal-content"></div>
+        <div class="bg-white rounded-2xl max-w-3xl w-full shadow-2xl overflow-hidden flex flex-col max-h-[90vh]" id="detail-modal-content">
+            <!-- Rendered dynamically -->
+        </div>
     </div>
 
+    <!-- Notification Toast -->
     <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl hidden flex items-center gap-3 z-50 text-sm">
         <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400" id="toast-icon"></i>
         <span id="toast-message">Operation successful!</span>
     </div>
 
+    <!-- JavaScript Application Logic -->
     <script>
+        // --- 10 STAGES DEFINITION ---
         const STAGES = [
             { id: 1, name: "Passport Submission", short: "Passport", desc: "Submitted original Ethiopian Passport." },
             { id: 2, name: "CV Preparation", short: "CV Prepared", desc: "CV formatted & uploaded for Saudi portal." },
@@ -411,6 +453,7 @@
             { id: 10, name: "Travel to Saudi Arabia", short: "Deployed / Traveled", desc: "Flight ticket issued & arrived in Saudi Arabia." }
         ];
 
+        // --- SEED INITIAL DATA ---
         const SEED_CANDIDATES = [
             {
                 id: "SOL-2026-101",
@@ -498,10 +541,12 @@
             }
         ];
 
+        // --- GLOBAL STATE ---
         let candidates = [];
         let pipelineChartInstance = null;
         let statusChartInstance = null;
 
+        // Initialize Application
         window.addEventListener('DOMContentLoaded', () => {
             loadCandidates();
             renderDashboard();
@@ -510,6 +555,7 @@
             lucide.createIcons();
         });
 
+        // --- STORAGE HANDLERS ---
         function loadCandidates() {
             const stored = localStorage.getItem('sol_agency_candidates');
             if (stored) {
@@ -528,6 +574,7 @@
             localStorage.setItem('sol_agency_candidates', JSON.stringify(candidates));
         }
 
+        // --- TAB SWITCHING ---
         function switchTab(tabId) {
             document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
             document.getElementById(`tab-${tabId}`).classList.remove('hidden');
@@ -558,6 +605,7 @@
             document.getElementById('mobile-menu').classList.toggle('hidden');
         }
 
+        // --- DASHBOARD LOGIC & CHARTS ---
         function renderDashboard() {
             const total = candidates.length;
             const active = candidates.filter(c => c.stage < 10).length;
@@ -571,6 +619,7 @@
             document.getElementById('stat-visa').innerText = visa;
             document.getElementById('stat-deployed').innerText = deployed;
 
+            // Render Recent Activity Table
             const recentTable = document.getElementById('recent-candidates-table');
             recentTable.innerHTML = '';
 
@@ -606,6 +655,7 @@
         }
 
         function initCharts() {
+            // Pipeline chart
             const stageCounts = STAGES.map(s => candidates.filter(c => c.stage === s.id).length);
             const ctx1 = document.getElementById('pipelineChart').getContext('2d');
 
@@ -633,6 +683,7 @@
                 }
             });
 
+            // Overview doughnut chart
             const inRegistration = candidates.filter(c => c.stage <= 3).length;
             const inTraining = candidates.filter(c => c.stage > 3 && c.stage <= 5).length;
             const inVisaMed = candidates.filter(c => c.stage > 5 && c.stage < 10).length;
@@ -658,6 +709,7 @@
             });
         }
 
+        // --- CANDIDATES TABLE VIEW ---
         function renderCandidatesTable() {
             const search = document.getElementById('search-input').value.toLowerCase();
             const stageVal = document.getElementById('stage-filter').value;
@@ -743,6 +795,7 @@
             renderCandidatesTable();
         }
 
+        // --- KANBAN BOARD VIEW ---
         function renderKanban() {
             const container = document.getElementById('kanban-container');
             container.innerHTML = '';
@@ -789,6 +842,7 @@
             });
         }
 
+        // --- PUBLIC SEARCH PORTAL ---
         function handlePublicSearch(e) {
             e.preventDefault();
             const query = document.getElementById('public-search-query').value.trim().toUpperCase();
@@ -864,6 +918,7 @@
             lucide.createIcons();
         }
 
+        // --- ACTIONS & MODALS ---
         function openAddModal() {
             document.getElementById('add-modal').classList.remove('hidden');
         }
@@ -910,6 +965,8 @@
             renderKanban();
 
             showToast(`Registered new applicant: ${name}`);
+
+            // Clear Form
             e.target.reset();
         }
 
@@ -934,6 +991,7 @@
                 </div>
 
                 <div class="p-6 space-y-6 overflow-y-auto custom-scrollbar flex-1 text-sm">
+                    <!-- Basic Info -->
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
                         <div>
                             <span class="text-[10px] uppercase font-bold text-slate-400 block">Job Role</span>
@@ -953,6 +1011,7 @@
                         </div>
                     </div>
 
+                    <!-- Update Stage Box -->
                     <div class="bg-amber-50 p-4 rounded-xl border border-amber-200 space-y-3">
                         <label class="block font-bold text-amber-900 text-xs uppercase">Advance Stage Status</label>
                         <div class="flex flex-col sm:flex-row gap-3">
@@ -966,6 +1025,7 @@
                         <p class="text-xs text-amber-700">Current Stage: <strong>${candidate.stage}. ${currentStageObj.name}</strong> (${currentStageObj.desc})</p>
                     </div>
 
+                    <!-- Notes -->
                     <div>
                         <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Candidate File Notes</label>
                         <textarea id="modal-notes" rows="3" class="w-full p-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sol-600 focus:outline-none">${candidate.notes || ''}</textarea>
@@ -1048,5 +1108,1111 @@
             }, 3000);
         }
     </script>
-</body>
+</body><!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sol Foreign Employment Agency - Candidate Tracking & Management System</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        sol: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        saudi: {
+                            500: '#006c35',
+                            600: '#005429',
+                            700: '#003d1e'
+                        },
+                        amber: {
+                            500: '#f59e0b',
+                            600: '#d97706'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col font-sans text-slate-800 antialiased bg-slate-50">
+
+    <!-- Top Navigation Bar -->
+    <header class="bg-sol-900 text-white shadow-md sticky top-0 z-30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo & Title -->
+                <div class="flex items-center space-x-3">
+                    <div class="bg-amber-500 text-sol-900 p-2 rounded-lg font-bold flex items-center justify-center">
+                        <i data-lucide="plane-takeoff" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-lg leading-tight tracking-wide">SOL FOREIGN EMPLOYMENT AGENCY</h1>
+                        <p class="text-xs text-amber-400 font-medium tracking-wider">ETHIOPIA TO SAUDI ARABIA RECRUITMENT SYSTEM</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <nav class="hidden md:flex space-x-1">
+                    <button id="nav-dashboard" onclick="switchTab('dashboard')" class="nav-btn px-4 py-2 rounded-md text-sm font-medium transition flex items-center gap-2 bg-sol-800 text-white shadow-inner">
+                        <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard
+                    </button>
+                    <button id="nav-candidates" onclick="switchTab('candidates')" class="nav-btn px-4 py-2 rounded-md text-sm font-medium text-slate-200 hover:bg-sol-800 hover:text-white transition flex items-center gap-2">
+                        <i data-lucide="users" class="w-4 h-4"></i> Candidates Manager
+                    </button>
+                    <button id="nav-kanban" onclick="switchTab('kanban')" class="nav-btn px-4 py-2 rounded-md text-sm font-medium text-slate-200 hover:bg-sol-800 hover:text-white transition flex items-center gap-2">
+                        <i data-lucide="kanban" class="w-4 h-4"></i> Stage Board
+                    </button>
+                    <button id="nav-tracker" onclick="switchTab('tracker')" class="nav-btn px-4 py-2 rounded-md text-sm font-medium text-amber-300 hover:bg-sol-800 hover:text-amber-200 transition flex items-center gap-2">
+                        <i data-lucide="search" class="w-4 h-4"></i> Public Status Portal
+                    </button>
+                </nav>
+
+                <!-- Action Button -->
+                <div class="flex items-center gap-3">
+                    <button onclick="openAddModal()" class="bg-amber-500 hover:bg-amber-600 text-sol-900 font-semibold text-xs sm:text-sm px-3 sm:px-4 py-2 rounded-lg shadow-sm transition flex items-center gap-1.5">
+                        <i data-lucide="user-plus" class="w-4 h-4"></i>
+                        <span>New Applicant</span>
+                    </button>
+                    <!-- Mobile Menu Button -->
+                    <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-md text-slate-300 hover:text-white hover:bg-sol-800 focus:outline-none">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-sol-800 px-4 pt-2 pb-3 space-y-1">
+            <button onclick="switchTab('dashboard'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-white hover:bg-sol-700">Dashboard</button>
+            <button onclick="switchTab('candidates'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:bg-sol-700">Candidates Manager</button>
+            <button onclick="switchTab('kanban'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:bg-sol-700">Stage Board</button>
+            <button onclick="switchTab('tracker'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-amber-300 hover:bg-sol-700">Public Status Portal</button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+
+        <!-- TAB 1: DASHBOARD -->
+        <section id="tab-dashboard" class="space-y-6">
+            <!-- Summary Stats Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div class="flex justify-between items-center text-slate-500">
+                        <span class="text-xs font-semibold uppercase tracking-wider">Total Candidates</span>
+                        <i data-lucide="users" class="w-5 h-5 text-sol-600"></i>
+                    </div>
+                    <div class="mt-2 flex items-baseline justify-between">
+                        <span id="stat-total" class="text-2xl font-bold text-slate-900">0</span>
+                        <span class="text-xs text-emerald-600 font-medium">All registered</span>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div class="flex justify-between items-center text-slate-500">
+                        <span class="text-xs font-semibold uppercase tracking-wider">In Progress</span>
+                        <i data-lucide="loader" class="w-5 h-5 text-amber-500"></i>
+                    </div>
+                    <div class="mt-2 flex items-baseline justify-between">
+                        <span id="stat-active" class="text-2xl font-bold text-slate-900">0</span>
+                        <span class="text-xs text-amber-600 font-medium">Stages 1-9</span>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div class="flex justify-between items-center text-slate-500">
+                        <span class="text-xs font-semibold uppercase tracking-wider">Selected by KSA</span>
+                        <i data-lucide="building-2" class="w-5 h-5 text-blue-600"></i>
+                    </div>
+                    <div class="mt-2 flex items-baseline justify-between">
+                        <span id="stat-selected" class="text-2xl font-bold text-slate-900">0</span>
+                        <span class="text-xs text-blue-600 font-medium">Stage 6+</span>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div class="flex justify-between items-center text-slate-500">
+                        <span class="text-xs font-semibold uppercase tracking-wider">Visa Issued</span>
+                        <i data-lucide="stamp" class="w-5 h-5 text-indigo-600"></i>
+                    </div>
+                    <div class="mt-2 flex items-baseline justify-between">
+                        <span id="stat-visa" class="text-2xl font-bold text-slate-900">0</span>
+                        <span class="text-xs text-indigo-600 font-medium">Stage 8+</span>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between col-span-2 md:col-span-1">
+                    <div class="flex justify-between items-center text-slate-500">
+                        <span class="text-xs font-semibold uppercase tracking-wider">Traveled / Deployed</span>
+                        <i data-lucide="plane" class="w-5 h-5 text-saudi-500"></i>
+                    </div>
+                    <div class="mt-2 flex items-baseline justify-between">
+                        <span id="stat-deployed" class="text-2xl font-bold text-slate-900">0</span>
+                        <span class="text-xs text-saudi-600 font-medium">Stage 10 Complete</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Bar Chart: Candidates per Stage -->
+                <div class="lg:col-span-2 bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
+                            <i data-lucide="bar-chart-3" class="w-5 h-5 text-sol-600"></i>
+                            Candidate Pipeline Distribution (10 Stages)
+                        </h3>
+                    </div>
+                    <div class="h-72">
+                        <canvas id="pipelineChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Doughnut Chart: Overall Status breakdown -->
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <h3 class="font-bold text-slate-800 text-base mb-4 flex items-center gap-2">
+                        <i data-lucide="pie-chart" class="w-5 h-5 text-amber-500"></i>
+                        Recruitment Overview
+                    </h3>
+                    <div class="h-72 flex items-center justify-center">
+                        <canvas id="statusChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Recent Activity & Fast Actions -->
+            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
+                        <i data-lucide="clock" class="w-5 h-5 text-sol-600"></i>
+                        Recent Applicants Activity
+                    </h3>
+                    <button onclick="switchTab('candidates')" class="text-xs font-semibold text-sol-600 hover:text-sol-800 flex items-center gap-1">
+                        View All Applicants <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-slate-600">
+                        <thead class="text-xs uppercase bg-slate-100 text-slate-500">
+                            <tr>
+                                <th class="p-3 rounded-l-md">Applicant</th>
+                                <th class="p-3">Passport #</th>
+                                <th class="p-3">Job Role</th>
+                                <th class="p-3">Current Stage</th>
+                                <th class="p-3">Progress</th>
+                                <th class="p-3 rounded-r-md text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-candidates-table" class="divide-y divide-slate-100">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: CANDIDATES MANAGEMENT (TABLE VIEW) -->
+        <section id="tab-candidates" class="space-y-4 hidden">
+            <!-- Filter Bar -->
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-3 justify-between items-center">
+                <!-- Search -->
+                <div class="relative w-full md:w-80">
+                    <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input type="text" id="search-input" onkeyup="renderCandidatesTable()" placeholder="Search name, passport, or ID..." class="w-full pl-9 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sol-600 focus:outline-none">
+                </div>
+
+                <!-- Filters -->
+                <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                    <select id="stage-filter" onchange="renderCandidatesTable()" class="px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:ring-2 focus:ring-sol-600 focus:outline-none flex-1 md:flex-none">
+                        <option value="ALL">All 10 Stages</option>
+                        <option value="1">1. Passport Submission</option>
+                        <option value="2">2. CV Preparation</option>
+                        <option value="3">3. Applicant Registration</option>
+                        <option value="4">4. Eligibility Verification</option>
+                        <option value="5">5. Complete Training</option>
+                        <option value="6">6. Saudi Customer Selection</option>
+                        <option value="7">7. Medical Examination</option>
+                        <option value="8">8. Visa Processing</option>
+                        <option value="9">9. Travel Clearance</option>
+                        <option value="10">10. Travel to Saudi Arabia</option>
+                    </select>
+
+                    <select id="job-filter" onchange="renderCandidatesTable()" class="px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:ring-2 focus:ring-sol-600 focus:outline-none flex-1 md:flex-none">
+                        <option value="ALL">All Professions</option>
+                        <option value="Housemaid / Domestic Worker">Housemaid / Domestic Worker</option>
+                        <option value="Driver">Driver</option>
+                        <option value="Caregiver">Caregiver</option>
+                        <option value="Construction / Skilled Labor">Construction Labor</option>
+                        <option value="Hospitality / Cleaner">Hospitality / Cleaner</option>
+                    </select>
+
+                    <button onclick="resetFilters()" class="p-2 border border-slate-300 text-slate-600 hover:bg-slate-50 rounded-lg text-sm font-medium" title="Reset Filters">
+                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main Table -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-slate-600">
+                        <thead class="text-xs uppercase bg-slate-100 text-slate-700 font-semibold">
+                            <tr>
+                                <th class="p-3.5">ID / Name</th>
+                                <th class="p-3.5">Passport #</th>
+                                <th class="p-3.5">Profession</th>
+                                <th class="p-3.5">Age / Gender</th>
+                                <th class="p-3.5">Current Stage</th>
+                                <th class="p-3.5">Progress</th>
+                                <th class="p-3.5 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="candidates-table-body" class="divide-y divide-slate-100">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Pagination Footer -->
+                <div class="p-3.5 bg-slate-50 border-t border-slate-200 text-xs text-slate-500 flex justify-between items-center">
+                    <span id="candidates-count-text">Showing 0 candidates</span>
+                    <span>Sol Employment Management Portal v2.0</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: KANBAN STAGE BOARD -->
+        <section id="tab-kanban" class="space-y-4 hidden">
+            <div class="flex justify-between items-center">
+                <p class="text-xs text-slate-500">Horizontal scrollable view across all 10 stages. Click on candidate cards for quick detail view.</p>
+            </div>
+            
+            <div class="flex gap-4 overflow-x-auto custom-scrollbar pb-6 pt-1" id="kanban-container" style="min-height: 520px;">
+                <!-- 10 Columns generated via JavaScript -->
+            </div>
+        </section>
+
+        <!-- TAB 4: PUBLIC CANDIDATE TRACKER PORTAL -->
+        <section id="tab-tracker" class="space-y-6 hidden">
+            <div class="max-w-2xl mx-auto bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-md">
+                <div class="text-center space-y-2 mb-6">
+                    <div class="inline-flex items-center justify-center p-3 bg-amber-100 text-amber-700 rounded-full mb-1">
+                        <i data-lucide="search" class="w-6 h-6"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-900">Candidate Live Status Search</h2>
+                    <p class="text-sm text-slate-500">Enter applicant's Ethiopian Passport Number or Application ID to view live progress.</p>
+                </div>
+
+                <form onsubmit="handlePublicSearch(event)" class="flex flex-col sm:flex-row gap-3">
+                    <div class="relative flex-1">
+                        <i data-lucide="file-text" class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="public-search-query" required placeholder="e.g. EP1234567 or SOL-2026-101" class="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-xl text-sm font-medium focus:ring-2 focus:ring-sol-600 focus:outline-none shadow-sm uppercase">
+                    </div>
+                    <button type="submit" class="bg-sol-800 hover:bg-sol-900 text-white font-semibold px-6 py-3 rounded-xl text-sm shadow-md transition flex items-center justify-center gap-2">
+                        <span>Track Status</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </form>
+
+                <div class="mt-3 text-center">
+                    <span class="text-xs text-slate-400">Sample Demo Passports: EP1029384, EP9876543, EP5544332</span>
+                </div>
+            </div>
+
+            <!-- Search Result Timeline Display -->
+            <div id="public-search-result" class="hidden max-w-4xl mx-auto bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-md space-y-6">
+                <!-- Dynamically filled with applicant timeline -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL: ADD NEW CANDIDATE -->
+    <div id="add-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="bg-sol-900 px-6 py-4 text-white flex justify-between items-center">
+                <h3 class="font-bold text-lg flex items-center gap-2">
+                    <i data-lucide="user-plus" class="w-5 h-5 text-amber-400"></i>
+                    Register New Ethiopian Applicant
+                </h3>
+                <button onclick="closeAddModal()" class="text-slate-300 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            
+            <form onsubmit="saveNewCandidate(event)" class="p-6 space-y-4 overflow-y-auto custom-scrollbar flex-1">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Full Name *</label>
+                        <input type="text" id="new-name" required placeholder="Abebe Kebede Tadesse" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sol-600 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Passport Number *</label>
+                        <input type="text" id="new-passport" required placeholder="EP1234567" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sol-600 focus:outline-none uppercase">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Profession / Job Applied *</label>
+                        <select id="new-job" required class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sol-600 focus:outline-none">
+                            <option value="Housemaid / Domestic Worker">Housemaid / Domestic Worker</option>
+                            <option value="Driver">Driver</option>
+                            <option value="Caregiver">Caregiver</option>
+                            <option value="Construction / Skilled Labor">Construction / Skilled Labor</option>
+                            <option value="Hospitality / Cleaner">Hospitality / Cleaner</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Phone Number *</label>
+                        <input type="tel" id="new-phone" required placeholder="+251 91 123 4567" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sol-600 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Age</label>
+                        <input type="number" id="new-age" min="18" max="55" value="25" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sol-600 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Gender</label>
+                        <select id="new-gender" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sol-600 focus:outline-none">
+                            <option value="Female">Female</option>
+                            <option value="Male">Male</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Initial Stage</label>
+                        <select id="new-stage" class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sol-600 focus:outline-none">
+                            <option value="1">Stage 1: Passport Submission</option>
+                            <option value="2">Stage 2: CV Preparation</option>
+                            <option value="3">Stage 3: Applicant Registration</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Saudi Sponsor/Agent (Optional)</label>
+                        <input type="text" id="new-sponsor" placeholder="Al-Riyadh Household Co." class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sol-600 focus:outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Notes / Special Instructions</label>
+                    <textarea id="new-notes" rows="2" placeholder="Applicant experience details, language skills, or medical conditions..." class="w-full p-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sol-600 focus:outline-none"></textarea>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-4 border-t border-slate-100">
+                    <button type="button" onclick="closeAddModal()" class="px-4 py-2 border border-slate-300 text-slate-600 rounded-lg text-sm font-medium hover:bg-slate-50">Cancel</button>
+                    <button type="submit" class="px-5 py-2 bg-sol-800 hover:bg-sol-900 text-white rounded-lg text-sm font-medium shadow-sm">Save & Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: CANDIDATE DETAILS & STAGE MANAGEMENT -->
+    <div id="detail-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-3xl w-full shadow-2xl overflow-hidden flex flex-col max-h-[90vh]" id="detail-modal-content">
+            <!-- Rendered dynamically -->
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl hidden flex items-center gap-3 z-50 text-sm">
+        <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400" id="toast-icon"></i>
+        <span id="toast-message">Operation successful!</span>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // --- 10 STAGES DEFINITION ---
+        const STAGES = [
+            { id: 1, name: "Passport Submission", short: "Passport", desc: "Submitted original Ethiopian Passport." },
+            { id: 2, name: "CV Preparation", short: "CV Prepared", desc: "CV formatted & uploaded for Saudi portal." },
+            { id: 3, name: "Applicant Registration", short: "Registered", desc: "Officially registered in Sol Agency database." },
+            { id: 4, name: "Eligibility Verification", short: "Eligibility Check", desc: "Age, background, and origin clearance." },
+            { id: 5, name: "Complete Training", short: "Training Completed", desc: "COC & Pre-departure orientation completed." },
+            { id: 6, name: "Saudi Customer Selection", short: "Selected by KSA", desc: "Matched and selected by Saudi employer/sponsor." },
+            { id: 7, name: "Medical Examination", short: "Medical Check", desc: "GAMCA / Ministry approved medical test passed." },
+            { id: 8, name: "Visa Processing", short: "Visa Processed", desc: "Saudi Enjaz visa stamped & verified." },
+            { id: 9, name: "Travel Clearance", short: "Travel Cleared", desc: "Ministry of Labor & Immigration clearance obtained." },
+            { id: 10, name: "Travel to Saudi Arabia", short: "Deployed / Traveled", desc: "Flight ticket issued & arrived in Saudi Arabia." }
+        ];
+
+        // --- SEED INITIAL DATA ---
+        const SEED_CANDIDATES = [
+            {
+                id: "SOL-2026-101",
+                name: "Abebech Tadesse Bekele",
+                passport: "EP1029384",
+                job: "Housemaid / Domestic Worker",
+                age: 24,
+                gender: "Female",
+                phone: "+251 91 122 3344",
+                stage: 8,
+                sponsor: "Al-Riyadh Family Services",
+                dateAdded: "2026-08-10",
+                notes: "Experienced in housework, basic Arabic language skills.",
+                documents: { passportSubmitted: true, cvCreated: true, medicalPassed: true, visaIssued: true }
+            },
+            {
+                id: "SOL-2026-102",
+                name: "Mulugeta Alemu Worku",
+                passport: "EP9876543",
+                job: "Driver",
+                age: 31,
+                gender: "Male",
+                phone: "+251 92 334 5566",
+                stage: 10,
+                sponsor: "Al-Jeddah Transport Co.",
+                dateAdded: "2026-06-15",
+                notes: "Valid Ethiopian heavy driving license.",
+                documents: { passportSubmitted: true, cvCreated: true, medicalPassed: true, visaIssued: true }
+            },
+            {
+                id: "SOL-2026-103",
+                name: "Tigist Seyoum Chala",
+                passport: "EP5544332",
+                job: "Caregiver",
+                age: 27,
+                gender: "Female",
+                phone: "+251 94 556 7788",
+                stage: 5,
+                sponsor: "Pending Selection",
+                dateAdded: "2026-09-01",
+                notes: "Currently attending mandatory pre-departure domestic training.",
+                documents: { passportSubmitted: true, cvCreated: true, medicalPassed: false, visaIssued: false }
+            },
+            {
+                id: "SOL-2026-104",
+                name: "Yonas Haile Mariam",
+                passport: "EP6677889",
+                job: "Construction / Skilled Labor",
+                age: 29,
+                gender: "Male",
+                phone: "+251 91 887 6655",
+                stage: 2,
+                sponsor: "N/A",
+                dateAdded: "2026-10-12",
+                notes: "Passport submitted, preparing CV details.",
+                documents: { passportSubmitted: true, cvCreated: false, medicalPassed: false, visaIssued: false }
+            },
+            {
+                id: "SOL-2026-105",
+                name: "Genet Assefa Desta",
+                passport: "EP3322110",
+                job: "Housemaid / Domestic Worker",
+                age: 22,
+                gender: "Female",
+                phone: "+251 93 111 2233",
+                stage: 6,
+                sponsor: "Al-Khobar Residence",
+                dateAdded: "2026-08-20",
+                notes: "Selected by sponsor, scheduled for GAMCA medical exam.",
+                documents: { passportSubmitted: true, cvCreated: true, medicalPassed: false, visaIssued: false }
+            },
+            {
+                id: "SOL-2026-106",
+                name: "Dawit Girma Zewde",
+                passport: "EP7711223",
+                job: "Hospitality / Cleaner",
+                age: 26,
+                gender: "Male",
+                phone: "+251 91 999 0011",
+                stage: 1,
+                sponsor: "N/A",
+                dateAdded: "2026-10-20",
+                notes: "Just registered today. Submitted passport.",
+                documents: { passportSubmitted: true, cvCreated: false, medicalPassed: false, visaIssued: false }
+            }
+        ];
+
+        // --- GLOBAL STATE ---
+        let candidates = [];
+        let pipelineChartInstance = null;
+        let statusChartInstance = null;
+
+        // Initialize Application
+        window.addEventListener('DOMContentLoaded', () => {
+            loadCandidates();
+            renderDashboard();
+            renderCandidatesTable();
+            renderKanban();
+            lucide.createIcons();
+        });
+
+        // --- STORAGE HANDLERS ---
+        function loadCandidates() {
+            const stored = localStorage.getItem('sol_agency_candidates');
+            if (stored) {
+                try {
+                    candidates = JSON.parse(stored);
+                } catch (e) {
+                    candidates = [...SEED_CANDIDATES];
+                }
+            } else {
+                candidates = [...SEED_CANDIDATES];
+                saveCandidates();
+            }
+        }
+
+        function saveCandidates() {
+            localStorage.setItem('sol_agency_candidates', JSON.stringify(candidates));
+        }
+
+        // --- TAB SWITCHING ---
+        function switchTab(tabId) {
+            document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-sol-800', 'text-white', 'shadow-inner');
+                btn.classList.add('text-slate-200');
+            });
+
+            const activeBtn = document.getElementById(`nav-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-sol-800', 'text-white', 'shadow-inner');
+                activeBtn.classList.remove('text-slate-200');
+            }
+
+            if (tabId === 'dashboard') {
+                renderDashboard();
+            } else if (tabId === 'candidates') {
+                renderCandidatesTable();
+            } else if (tabId === 'kanban') {
+                renderKanban();
+            }
+
+            lucide.createIcons();
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        // --- DASHBOARD LOGIC & CHARTS ---
+        function renderDashboard() {
+            const total = candidates.length;
+            const active = candidates.filter(c => c.stage < 10).length;
+            const selected = candidates.filter(c => c.stage >= 6).length;
+            const visa = candidates.filter(c => c.stage >= 8).length;
+            const deployed = candidates.filter(c => c.stage === 10).length;
+
+            document.getElementById('stat-total').innerText = total;
+            document.getElementById('stat-active').innerText = active;
+            document.getElementById('stat-selected').innerText = selected;
+            document.getElementById('stat-visa').innerText = visa;
+            document.getElementById('stat-deployed').innerText = deployed;
+
+            // Render Recent Activity Table
+            const recentTable = document.getElementById('recent-candidates-table');
+            recentTable.innerHTML = '';
+
+            const sorted = [...candidates].sort((a,b) => b.id.localeCompare(a.id)).slice(0, 5);
+            sorted.forEach(c => {
+                const stageObj = STAGES.find(s => s.id === c.stage);
+                const progressPct = Math.round((c.stage / 10) * 100);
+
+                recentTable.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-3 font-semibold text-slate-900">${c.name} <br><span class="text-xs text-slate-400 font-normal">${c.id}</span></td>
+                        <td class="p-3 font-mono text-xs">${c.passport}</td>
+                        <td class="p-3">${c.job}</td>
+                        <td class="p-3">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-sol-100 text-sol-800">
+                                Stage ${c.stage}: ${stageObj.short}
+                            </span>
+                        </td>
+                        <td class="p-3">
+                            <div class="w-full bg-slate-200 rounded-full h-2 max-w-[100px]">
+                                <div class="bg-sol-600 h-2 rounded-full" style="width: ${progressPct}%"></div>
+                            </div>
+                            <span class="text-[10px] text-slate-500 font-medium">${progressPct}%</span>
+                        </td>
+                        <td class="p-3 text-right">
+                            <button onclick="openDetailModal('${c.id}')" class="text-xs font-semibold text-sol-600 hover:text-sol-800 bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded">View</button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            initCharts();
+        }
+
+        function initCharts() {
+            // Pipeline chart
+            const stageCounts = STAGES.map(s => candidates.filter(c => c.stage === s.id).length);
+            const ctx1 = document.getElementById('pipelineChart').getContext('2d');
+
+            if (pipelineChartInstance) pipelineChartInstance.destroy();
+
+            pipelineChartInstance = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: STAGES.map(s => `S${s.id}: ${s.short}`),
+                    datasets: [{
+                        label: 'Candidates in Stage',
+                        data: stageCounts,
+                        backgroundColor: '#0284c7',
+                        borderRadius: 6,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { precision: 0 } },
+                        x: { ticks: { font: { size: 10 } } }
+                    }
+                }
+            });
+
+            // Overview doughnut chart
+            const inRegistration = candidates.filter(c => c.stage <= 3).length;
+            const inTraining = candidates.filter(c => c.stage > 3 && c.stage <= 5).length;
+            const inVisaMed = candidates.filter(c => c.stage > 5 && c.stage < 10).length;
+            const completed = candidates.filter(c => c.stage === 10).length;
+
+            const ctx2 = document.getElementById('statusChart').getContext('2d');
+            if (statusChartInstance) statusChartInstance.destroy();
+
+            statusChartInstance = new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Registration (S1-3)', 'Training/Check (S4-5)', 'Selection/Visa (S6-9)', 'Deployed (S10)'],
+                    datasets: [{
+                        data: [inRegistration, inTraining, inVisaMed, completed],
+                        backgroundColor: ['#94a3b8', '#f59e0b', '#0284c7', '#006c35']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } } }
+                }
+            });
+        }
+
+        // --- CANDIDATES TABLE VIEW ---
+        function renderCandidatesTable() {
+            const search = document.getElementById('search-input').value.toLowerCase();
+            const stageVal = document.getElementById('stage-filter').value;
+            const jobVal = document.getElementById('job-filter').value;
+
+            const filtered = candidates.filter(c => {
+                const matchesSearch = c.name.toLowerCase().includes(search) || 
+                                      c.passport.toLowerCase().includes(search) || 
+                                      c.id.toLowerCase().includes(search);
+                const matchesStage = stageVal === 'ALL' || c.stage == stageVal;
+                const matchesJob = jobVal === 'ALL' || c.job === jobVal;
+                return matchesSearch && matchesStage && matchesJob;
+            });
+
+            const tbody = document.getElementById('candidates-table-body');
+            tbody.innerHTML = '';
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="p-8 text-center text-slate-400">
+                            <i data-lucide="user-x" class="w-8 h-8 mx-auto mb-2 opacity-50"></i>
+                            No matching candidate records found.
+                        </td>
+                    </tr>
+                `;
+                document.getElementById('candidates-count-text').innerText = 'Showing 0 candidates';
+                lucide.createIcons();
+                return;
+            }
+
+            filtered.forEach(c => {
+                const stageObj = STAGES.find(s => s.id === c.stage);
+                const progressPct = Math.round((c.stage / 10) * 100);
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+                        <td class="p-3.5">
+                            <div class="font-bold text-slate-900">${c.name}</div>
+                            <div class="text-xs text-slate-400 font-mono">${c.id}</div>
+                        </td>
+                        <td class="p-3.5 font-mono text-xs font-semibold text-slate-700">${c.passport}</td>
+                        <td class="p-3.5 text-xs text-slate-700 font-medium">${c.job}</td>
+                        <td class="p-3.5 text-xs">${c.age} yrs / ${c.gender}</td>
+                        <td class="p-3.5">
+                            <span class="px-2.5 py-1 rounded-full text-xs font-semibold ${c.stage === 10 ? 'bg-emerald-100 text-emerald-800' : 'bg-sol-100 text-sol-800'}">
+                                ${c.stage}. ${stageObj.short}
+                            </span>
+                        </td>
+                        <td class="p-3.5">
+                            <div class="flex items-center gap-2">
+                                <div class="w-24 bg-slate-200 rounded-full h-2">
+                                    <div class="bg-sol-600 h-2 rounded-full" style="width: ${progressPct}%"></div>
+                                </div>
+                                <span class="text-xs text-slate-500 font-semibold">${progressPct}%</span>
+                            </div>
+                        </td>
+                        <td class="p-3.5 text-center">
+                            <div class="flex items-center justify-center gap-2">
+                                <button onclick="openDetailModal('${c.id}')" title="View & Edit Details" class="p-1.5 text-sol-600 hover:bg-sol-50 rounded-lg">
+                                    <i data-lucide="eye" class="w-4 h-4"></i>
+                                </button>
+                                <button onclick="quickAdvanceStage('${c.id}')" title="Advance to Next Stage" class="p-1.5 text-amber-600 hover:bg-amber-50 rounded-lg" ${c.stage === 10 ? 'disabled class="opacity-30"' : ''}>
+                                    <i data-lucide="arrow-right-circle" class="w-4 h-4"></i>
+                                </button>
+                                <button onclick="deleteCandidate('${c.id}')" title="Delete Candidate" class="p-1.5 text-red-500 hover:bg-red-50 rounded-lg">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('candidates-count-text').innerText = `Showing ${filtered.length} of ${candidates.length} candidates`;
+            lucide.createIcons();
+        }
+
+        function resetFilters() {
+            document.getElementById('search-input').value = '';
+            document.getElementById('stage-filter').value = 'ALL';
+            document.getElementById('job-filter').value = 'ALL';
+            renderCandidatesTable();
+        }
+
+        // --- KANBAN BOARD VIEW ---
+        function renderKanban() {
+            const container = document.getElementById('kanban-container');
+            container.innerHTML = '';
+
+            STAGES.forEach(stage => {
+                const stageCandidates = candidates.filter(c => c.stage === stage.id);
+
+                let cardsHtml = '';
+                if (stageCandidates.length === 0) {
+                    cardsHtml = `<div class="text-xs text-center text-slate-400 py-8 border border-dashed border-slate-200 rounded-lg">No candidates</div>`;
+                } else {
+                    stageCandidates.forEach(c => {
+                        cardsHtml += `
+                            <div onclick="openDetailModal('${c.id}')" class="bg-white p-3 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition cursor-pointer space-y-2 group">
+                                <div class="flex justify-between items-start">
+                                    <span class="font-bold text-xs text-slate-900 group-hover:text-sol-600">${c.name}</span>
+                                    <span class="text-[10px] font-mono bg-slate-100 px-1.5 py-0.5 rounded text-slate-600">${c.passport}</span>
+                                </div>
+                                <p class="text-[11px] text-slate-500">${c.job}</p>
+                                <div class="flex justify-between items-center text-[10px] text-slate-400 pt-1 border-t border-slate-100">
+                                    <span>${c.id}</span>
+                                    <span class="font-medium text-sol-700">Stage ${c.stage}/10</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                container.innerHTML += `
+                    <div class="w-64 flex-shrink-0 bg-slate-100/80 rounded-xl p-3 border border-slate-200 flex flex-col h-full max-h-[700px]">
+                        <div class="flex justify-between items-center mb-2 px-1">
+                            <h4 class="font-bold text-xs text-slate-800 flex items-center gap-1.5">
+                                <span class="w-5 h-5 bg-sol-800 text-white rounded-full flex items-center justify-center text-[10px]">${stage.id}</span>
+                                <span class="truncate max-w-[140px]">${stage.short}</span>
+                            </h4>
+                            <span class="text-xs font-semibold bg-white text-slate-600 px-2 py-0.5 rounded-full border border-slate-200">${stageCandidates.length}</span>
+                        </div>
+                        <p class="text-[10px] text-slate-500 mb-3 px-1 leading-tight line-clamp-1" title="${stage.desc}">${stage.desc}</p>
+                        <div class="space-y-2 overflow-y-auto custom-scrollbar flex-1 pr-1">
+                            ${cardsHtml}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // --- PUBLIC SEARCH PORTAL ---
+        function handlePublicSearch(e) {
+            e.preventDefault();
+            const query = document.getElementById('public-search-query').value.trim().toUpperCase();
+            const resultBox = document.getElementById('public-search-result');
+
+            const found = candidates.find(c => c.passport.toUpperCase() === query || c.id.toUpperCase() === query);
+
+            if (!found) {
+                resultBox.classList.remove('hidden');
+                resultBox.innerHTML = `
+                    <div class="text-center py-6 text-slate-600">
+                        <i data-lucide="alert-circle" class="w-10 h-10 text-amber-500 mx-auto mb-2"></i>
+                        <h3 class="font-bold text-lg text-slate-800">Applicant Record Not Found</h3>
+                        <p class="text-sm text-slate-500 mt-1">No candidate matches "${query}". Please check your passport number or contact Sol Agency support.</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            const currentStageObj = STAGES.find(s => s.id === found.stage);
+            const progressPct = Math.round((found.stage / 10) * 100);
+
+            let timelineItems = '';
+            STAGES.forEach(s => {
+                const isCompleted = s.id < found.stage;
+                const isCurrent = s.id === found.stage;
+
+                let iconClass = "bg-slate-200 text-slate-500";
+                if (isCompleted) iconClass = "bg-emerald-500 text-white";
+                if (isCurrent) iconClass = "bg-sol-600 text-white ring-4 ring-sol-100";
+
+                timelineItems += `
+                    <div class="flex items-start gap-4 relative">
+                        <div class="w-8 h-8 rounded-full ${iconClass} flex items-center justify-center font-bold text-xs flex-shrink-0 z-10">
+                            ${isCompleted ? '<i data-lucide="check" class="w-4 h-4"></i>' : s.id}
+                        </div>
+                        <div class="flex-1 pb-6 ${s.id < 10 ? 'border-b border-slate-100' : ''}">
+                            <div class="flex justify-between items-center">
+                                <h4 class="font-bold text-sm ${isCurrent ? 'text-sol-800' : 'text-slate-800'}">${s.name}</h4>
+                                ${isCurrent ? '<span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Current Active Stage</span>' : ''}
+                                ${isCompleted ? '<span class="text-xs text-emerald-600 font-medium">Completed</span>' : ''}
+                            </div>
+                            <p class="text-xs text-slate-500 mt-0.5">${s.desc}</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            resultBox.classList.remove('hidden');
+            resultBox.innerHTML = `
+                <div class="border-b border-slate-200 pb-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <span class="text-xs font-mono bg-sol-100 text-sol-800 px-2.5 py-1 rounded-md font-semibold">${found.id}</span>
+                        <h3 class="text-xl font-bold text-slate-900 mt-1">${found.name}</h3>
+                        <p class="text-xs text-slate-500">Passport: <span class="font-mono font-semibold">${found.passport}</span> | Job: ${found.job}</p>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-xs text-slate-400">Current Status</div>
+                        <div class="text-sm font-bold text-sol-700">Stage ${found.stage}: ${currentStageObj.name}</div>
+                        <div class="text-xs text-emerald-600 font-semibold mt-0.5">${progressPct}% Process Completed</div>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <h4 class="text-xs font-bold uppercase text-slate-400 tracking-wider">Process Stage Timeline</h4>
+                    <div class="space-y-2 pt-2">
+                        ${timelineItems}
+                    </div>
+                </div>
+            `;
+
+            lucide.createIcons();
+        }
+
+        // --- ACTIONS & MODALS ---
+        function openAddModal() {
+            document.getElementById('add-modal').classList.remove('hidden');
+        }
+
+        function closeAddModal() {
+            document.getElementById('add-modal').classList.add('hidden');
+        }
+
+        function saveNewCandidate(e) {
+            e.preventDefault();
+            const name = document.getElementById('new-name').value.trim();
+            const passport = document.getElementById('new-passport').value.trim().toUpperCase();
+            const job = document.getElementById('new-job').value;
+            const phone = document.getElementById('new-phone').value.trim();
+            const age = parseInt(document.getElementById('new-age').value);
+            const gender = document.getElementById('new-gender').value;
+            const stage = parseInt(document.getElementById('new-stage').value);
+            const sponsor = document.getElementById('new-sponsor').value.trim() || 'N/A';
+            const notes = document.getElementById('new-notes').value.trim();
+
+            const newId = `SOL-${new Date().getFullYear()}-${Math.floor(100 + Math.random() * 900)}`;
+
+            const newCandidate = {
+                id: newId,
+                name,
+                passport,
+                job,
+                phone,
+                age,
+                gender,
+                stage,
+                sponsor,
+                dateAdded: new Date().toISOString().split('T')[0],
+                notes,
+                documents: { passportSubmitted: true, cvCreated: stage >= 2, medicalPassed: stage >= 7, visaIssued: stage >= 8 }
+            };
+
+            candidates.unshift(newCandidate);
+            saveCandidates();
+
+            closeAddModal();
+            renderDashboard();
+            renderCandidatesTable();
+            renderKanban();
+
+            showToast(`Registered new applicant: ${name}`);
+
+            // Clear Form
+            e.target.reset();
+        }
+
+        function openDetailModal(candidateId) {
+            const candidate = candidates.find(c => c.id === candidateId);
+            if (!candidate) return;
+
+            const modalContent = document.getElementById('detail-modal-content');
+            const currentStageObj = STAGES.find(s => s.id === candidate.stage);
+
+            let stageOptions = STAGES.map(s => 
+                `<option value="${s.id}" ${s.id === candidate.stage ? 'selected' : ''}>Stage ${s.id}: ${s.name}</option>`
+            ).join('');
+
+            modalContent.innerHTML = `
+                <div class="bg-sol-900 px-6 py-4 text-white flex justify-between items-center">
+                    <div>
+                        <h3 class="font-bold text-lg">${candidate.name}</h3>
+                        <p class="text-xs text-amber-400 font-mono">ID: ${candidate.id} | Passport: ${candidate.passport}</p>
+                    </div>
+                    <button onclick="closeDetailModal()" class="text-slate-300 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+
+                <div class="p-6 space-y-6 overflow-y-auto custom-scrollbar flex-1 text-sm">
+                    <!-- Basic Info -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <div>
+                            <span class="text-[10px] uppercase font-bold text-slate-400 block">Job Role</span>
+                            <span class="font-semibold text-slate-800">${candidate.job}</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-bold text-slate-400 block">Phone</span>
+                            <span class="font-semibold text-slate-800">${candidate.phone}</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-bold text-slate-400 block">Age / Gender</span>
+                            <span class="font-semibold text-slate-800">${candidate.age} yrs / ${candidate.gender}</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-bold text-slate-400 block">Saudi Sponsor</span>
+                            <span class="font-semibold text-slate-800">${candidate.sponsor}</span>
+                        </div>
+                    </div>
+
+                    <!-- Update Stage Box -->
+                    <div class="bg-amber-50 p-4 rounded-xl border border-amber-200 space-y-3">
+                        <label class="block font-bold text-amber-900 text-xs uppercase">Advance Stage Status</label>
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <select id="modal-stage-select" class="flex-1 p-2.5 bg-white border border-amber-300 rounded-lg text-sm font-semibold text-slate-800 focus:outline-none">
+                                ${stageOptions}
+                            </select>
+                            <button onclick="updateCandidateStage('${candidate.id}')" class="bg-sol-800 hover:bg-sol-900 text-white font-semibold px-4 py-2.5 rounded-lg text-sm transition">
+                                Update Stage Status
+                            </button>
+                        </div>
+                        <p class="text-xs text-amber-700">Current Stage: <strong>${candidate.stage}. ${currentStageObj.name}</strong> (${currentStageObj.desc})</p>
+                    </div>
+
+                    <!-- Notes -->
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Candidate File Notes</label>
+                        <textarea id="modal-notes" rows="3" class="w-full p-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-sol-600 focus:outline-none">${candidate.notes || ''}</textarea>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-slate-50 border-t border-slate-200 flex justify-between items-center">
+                    <button onclick="deleteCandidate('${candidate.id}')" class="text-red-600 hover:text-red-800 text-xs font-semibold flex items-center gap-1">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i> Delete Record
+                    </button>
+                    <div class="flex gap-2">
+                        <button onclick="saveCandidateNotes('${candidate.id}')" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-lg text-sm font-medium">Save Notes</button>
+                        <button onclick="closeDetailModal()" class="px-4 py-2 bg-sol-800 text-white rounded-lg text-sm font-medium">Close</button>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('detail-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detail-modal').classList.add('hidden');
+        }
+
+        function updateCandidateStage(id) {
+            const newStage = parseInt(document.getElementById('modal-stage-select').value);
+            const candidate = candidates.find(c => c.id === id);
+            if (candidate) {
+                candidate.stage = newStage;
+                saveCandidates();
+                renderDashboard();
+                renderCandidatesTable();
+                renderKanban();
+                closeDetailModal();
+                showToast(`Stage updated to Stage ${newStage} for ${candidate.name}`);
+            }
+        }
+
+        function saveCandidateNotes(id) {
+            const notes = document.getElementById('modal-notes').value;
+            const candidate = candidates.find(c => c.id === id);
+            if (candidate) {
+                candidate.notes = notes;
+                saveCandidates();
+                showToast(`Notes updated for ${candidate.name}`);
+            }
+        }
+
+        function quickAdvanceStage(id) {
+            const candidate = candidates.find(c => c.id === id);
+            if (candidate && candidate.stage < 10) {
+                candidate.stage += 1;
+                saveCandidates();
+                renderDashboard();
+                renderCandidatesTable();
+                renderKanban();
+                showToast(`Advanced ${candidate.name} to Stage ${candidate.stage}`);
+            }
+        }
+
+        function deleteCandidate(id) {
+            if (confirm("Are you sure you want to delete this applicant record?")) {
+                candidates = candidates.filter(c => c.id !== id);
+                saveCandidates();
+                renderDashboard();
+                renderCandidatesTable();
+                renderKanban();
+                closeDetailModal();
+                showToast("Applicant deleted successfully.");
+            }
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
 </html>
